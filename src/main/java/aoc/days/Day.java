@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
+import static aoc.util.AoCConstants.COPY_TO_CLIPBOARD;
+
 public abstract class Day {
     public void solve() {
         try {
@@ -39,7 +41,9 @@ public abstract class Day {
     }
 
     protected void terminate(String solution) {
-        final Clipboard clipboardObj = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboardObj.setContents(new StringSelection(solution), null);
+        if (COPY_TO_CLIPBOARD) {
+            final Clipboard clipboardObj = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboardObj.setContents(new StringSelection(solution), null);
+        }
     }
 }
