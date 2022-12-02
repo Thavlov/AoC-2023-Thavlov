@@ -1,6 +1,6 @@
 package aoc;
 
-import aoc.days.Day01;
+import aoc.days.*;
 import aoc.util.SolutionUtil;
 
 public class AdventOfCode2022Solutions {
@@ -17,5 +17,6 @@ public class AdventOfCode2022Solutions {
         System.out.println("Advent of Code 2022 solutions:");
 
         SolutionUtil.solveDay(Day01.class);
+        SolutionUtil.solveDay(Day02.class);
     }
 }
