@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -83,6 +84,15 @@ public final class FileUtil {
         return readFileToPair(day, FileUtil::toStringIntPair);
     }
 
+    public static List<Pair<String, String>> readFileToSplitStringPair(int day) throws Exception {
+        return readFileToPair(day, FileUtil::splitByMiddle);
+    }
+
+    public static Pair<String, String> splitByMiddle(final String s) {
+        int length = s.length() / 2;
+        return new Pair<>(s.substring(0, length), s.substring(length));
+    }
+
     private static Pair<String, Integer> toStringIntPair(String line) {
         final String[] split = line.split(" ");
         return new Pair<>(split[0], Integer.parseInt(split[1]));
@@ -101,12 +111,27 @@ public final class FileUtil {
         }
     }
 
-    private static <T, R> List<Pair<T, R>> readFileToPair(int day, Function<String, Pair<T, R>> mapper) throws Exception {
+    public static <T, R> List<Pair<T, R>> readFileToPair(int day, Function<String, Pair<T, R>> mapper) throws Exception {
         final Path path = loadInputFileFromDay(day);
 
         try (final Stream<String> lines = Files.lines(path)) {
             return lines.map(mapper).collect(Collectors.toList());
         }
+    }
+
+    public static List<List<String>> readFileToStringInGroupsOf(int day, int groupNum) throws Exception {
+        final List<String> input = readFileToStrings(day);
+        final List<List<String>> result = new ArrayList<>();
+        List<String> group = new ArrayList<>(groupNum);
+
+        for (String s : input) {
+            group.add(s);
+            if (group.size() == groupNum) {
+                result.add(group);
+                group = new ArrayList<>(groupNum);
+            }
+        }
+        return result;
     }
 
     public static Path loadInputFileFromDay(int day) throws Exception {
