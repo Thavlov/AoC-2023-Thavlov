@@ -16,9 +16,10 @@ public class AdventOfCode2022Solutions {
     private static void solveAll() throws Exception {
         System.out.println("Advent of Code 2022 solutions:");
 
-        SolutionUtil.solveDay(Day01.class);
-        SolutionUtil.solveDay(Day02.class);
-        SolutionUtil.solveDay(Day03.class);
-        SolutionUtil.solveDay(Day04.class);
+//        SolutionUtil.solveDay(Day01.class);
+//        SolutionUtil.solveDay(Day02.class);
+//        SolutionUtil.solveDay(Day03.class);
+//        SolutionUtil.solveDay(Day04.class);
+        SolutionUtil.solveDay(Day05.class);
     }
 }

@@ -19,6 +19,23 @@ public final class FileUtil {
         // EMPTY
     }
 
+    public static List<String> readFileToStrings(int day, int numLines) throws Exception {
+        Path path = loadInputFileFromDay(day);
+
+        try (final Stream<String> lines = Files.lines(path)) {
+            return lines.limit(numLines).collect(Collectors.toList());
+        }
+    }
+
+    public static List<String> readFileToStringsSkip(int day, int numLines) throws Exception {
+        Path path = loadInputFileFromDay(day);
+
+        try (final Stream<String> lines = Files.lines(path)) {
+            return lines.skip(numLines).collect(Collectors.toList());
+        }
+    }
+
+
     public static List<String> readFileToStrings(int day) throws Exception {
         Path path = loadInputFileFromDay(day);
 
