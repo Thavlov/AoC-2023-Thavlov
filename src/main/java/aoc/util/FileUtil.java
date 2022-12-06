@@ -19,6 +19,10 @@ public final class FileUtil {
         // EMPTY
     }
 
+    public static String readSingleStringFile(int day) throws Exception {
+        return readFileToStrings(day, 1).get(0);
+    }
+
     public static List<String> readFileToStrings(int day, int numLines) throws Exception {
         Path path = loadInputFileFromDay(day);
 
