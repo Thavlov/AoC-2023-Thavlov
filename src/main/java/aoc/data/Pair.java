@@ -1,4 +1,4 @@
-package aoc.util;
+package aoc.data;
 
 public class Pair<T, T1> {
     final T first;

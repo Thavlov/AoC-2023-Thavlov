@@ -1,6 +1,6 @@
 package aoc.days;
 
-import aoc.days.data.Directory;
+import aoc.data.Directory;
 import aoc.util.FileUtil;
 
 import java.util.List;

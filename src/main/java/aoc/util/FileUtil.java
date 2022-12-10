@@ -1,5 +1,7 @@
 package aoc.util;
 
+import aoc.data.Pair;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;

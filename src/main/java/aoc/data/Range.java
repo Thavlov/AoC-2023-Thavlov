@@ -1,4 +1,4 @@
-package aoc.util;
+package aoc.data;
 
 public class Range {
     final int from;

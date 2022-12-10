@@ -1,7 +1,7 @@
 package aoc.days;
 
 import aoc.util.FileUtil;
-import aoc.util.Pair;
+import aoc.data.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

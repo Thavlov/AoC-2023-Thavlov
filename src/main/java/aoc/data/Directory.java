@@ -1,6 +1,4 @@
-package aoc.days.data;
-
-import aoc.util.Pair;
+package aoc.data;
 
 import java.util.*;
 import java.util.regex.Matcher;
