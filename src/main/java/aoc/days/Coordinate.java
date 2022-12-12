@@ -35,22 +35,20 @@ public class Coordinate {
         return this.x == other.getX() || this.y == other.getY();
     }
 
-    public boolean isTwoAwaySingleAdjTo(final Coordinate other) {
-        return Math.abs(this.x - other.getX()) > 0 && Math.abs(this.y - other.getY()) > 0;
+    public Coordinate[] getCoordinateAdjacent() {
+        Coordinate[] result = new Coordinate[4];
+        result[0] = new Coordinate(x + 1, y);
+        result[1] = new Coordinate(x - 1, y);
+        result[2] = new Coordinate(x, y - 1);
+        result[3] = new Coordinate(x, y + 1);
+        return result;
     }
 
     public Coordinate getCoordinateAdjacentTo(final Coordinate other) {
-        if (other.isAdjacentTo(new Coordinate(x + 1, y))) {
-            return new Coordinate(x + 1, y);
-        }
-        if (other.isAdjacentTo(new Coordinate(x - 1, y))) {
-            return new Coordinate(x - 1, y);
-        }
-        if (other.isAdjacentTo(new Coordinate(x, y - 1))) {
-            return new Coordinate(x, y - 1);
-        }
-        if (other.isAdjacentTo(new Coordinate(x, y + 1))) {
-            return new Coordinate(x, y + 1);
+        for (Coordinate coordinate : getCoordinateAdjacent()) {
+            if (other.isAdjacentTo(coordinate)) {
+                return coordinate;
+            }
         }
         throw new RuntimeException("Error: No direct coordinate.");
     }

@@ -7,6 +7,7 @@ public interface AoCConstants {
     String INPUT_FILE_NAME = "input.txt";
     String EXAMPLE_FILE_NAME = "example.txt";
     String INPUT_FILE_FOLDER = "src/main/resources/day%02d";
+    boolean PRINT_EXECUTION_TIME = false;
     boolean COPY_TO_CLIPBOARD = false;
     boolean RUN_EXAMPLE = false;
 }

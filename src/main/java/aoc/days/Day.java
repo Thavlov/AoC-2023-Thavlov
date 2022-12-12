@@ -1,5 +1,7 @@
 package aoc.days;
 
+import aoc.util.AoCConstants;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -9,8 +11,16 @@ import static aoc.util.AoCConstants.COPY_TO_CLIPBOARD;
 public abstract class Day {
     public void solve() {
         try {
+            long startTime = System.currentTimeMillis();
             solvePart1();
+            if (AoCConstants.PRINT_EXECUTION_TIME) {
+                System.out.println(String.format("Part 1 solved in %d ms.", ((System.currentTimeMillis() - startTime))));
+            }
+            startTime = System.currentTimeMillis();
             solvePart2();
+            if (AoCConstants.PRINT_EXECUTION_TIME) {
+                System.out.println(String.format("Part 2 solved in %d ms.", ((System.currentTimeMillis() - startTime))));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

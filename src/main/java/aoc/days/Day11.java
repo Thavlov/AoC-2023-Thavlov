@@ -3,29 +3,23 @@ package aoc.days;
 import aoc.data.Monkey;
 import aoc.data.Pair;
 import aoc.util.FileUtil;
+import aoc.util.StringUtil;
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Day11 extends Day {
-    private HashMap<Integer, Monkey> monkeys;
+    private Map<Integer, Monkey> monkeys;
 
     protected void initialize() throws Exception {
         List<String> input = FileUtil.readFileToStrings(getDay());
-        monkeys = new HashMap<>();
-        List<String> monkeyLines = new ArrayList<>();
-        for (String s : input) {
-            if ("".equals(s)) {
-                Monkey monkey = Monkey.parse(monkeyLines);
-                monkeys.put(monkey.getMonkeyId(), monkey);
-                monkeyLines.clear();
-                continue;
-            }
-            monkeyLines.add(s);
-        }
-        Monkey monkey = Monkey.parse(monkeyLines);
-        monkeys.put(monkey.getMonkeyId(), monkey);
+        List<List<String>> lists = StringUtil.splitInGroupsSeparatedByEmptyLine(input);
+        monkeys = lists.stream().map(Monkey::parse).collect(Collectors.toMap(Monkey::getMonkeyId, Function.identity()));
     }
 
     protected String getPart1Solution() {
