@@ -2,10 +2,21 @@ package aoc.data;
 
 import aoc.days.Coordinate;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CharArray {
+    private static final char FILL_CHAR = '.';
     final private char[][] array;
+
+    public CharArray(int size) {
+        this(size, size);
+    }
+
+    public CharArray(int sizeX, int sizeY) {
+        this.array = new char[sizeY][sizeX];
+        fillArray(FILL_CHAR);
+    }
 
     public CharArray(char[][] array) {
         this.array = array;
@@ -26,7 +37,7 @@ public class CharArray {
 
         for (int x = 0; x < array[0].length; x++) {
             for (int y = 0; y < array.length; y++) {
-                intArray[y][x] = getValue(x, y)-base;
+                intArray[y][x] = getValue(x, y) - base;
             }
         }
         return new IntArray(intArray);
@@ -40,8 +51,16 @@ public class CharArray {
         return array.length;
     }
 
+    public char getValue(Coordinate coordinate) {
+        return array[coordinate.getY()][coordinate.getX()];
+    }
+
     public char getValue(int x, int y) {
         return array[y][x];
+    }
+
+    public void setValue(Coordinate coordinate, char c) {
+        setValue(coordinate.getX(), coordinate.getY(), c);
     }
 
     public void setValue(int x, int y, char c) {
@@ -68,12 +87,6 @@ public class CharArray {
         return new String(getVerticalSlice(x));
     }
 
-    public void printArray() {
-        for (int y = 0; y < array.length; y++) {
-            System.out.println(getHorizontalSliceAsString(y));
-        }
-    }
-
     public Coordinate findCoordinateWith(char c) {
         for (int x = 0; x < getHorizontalSize(); x++) {
             for (int y = 0; y < getVerticalSize(); y++) {
@@ -83,5 +96,30 @@ public class CharArray {
             }
         }
         throw new RuntimeException("Coordinate not found");
+    }
+
+    private void fillArray(char c) {
+        for (char[] chars : array) {
+            Arrays.fill(chars, c);
+        }
+    }
+
+    public void fillBetween(Coordinate c1, Coordinate c2, char c) {
+        Coordinate[] allCoordinatesBetween = Coordinate.getAllCoordinatesBetween(c1, c2);
+        for (Coordinate coordinate : allCoordinatesBetween) {
+            setValue(coordinate, c);
+        }
+    }
+
+    public void printArray() {
+        for (int y = 0; y < array.length; y++) {
+            System.out.println(getHorizontalSliceAsString(y));
+        }
+    }
+
+    public void printSection(int x, int dx, int y, int dy) {
+        for (int i = y; i <= y + dy; i++) {
+            System.out.println(getHorizontalSliceAsString(i).substring(x, x + dx ));
+        }
     }
 }
