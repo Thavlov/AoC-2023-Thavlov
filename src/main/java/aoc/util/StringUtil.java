@@ -15,10 +15,6 @@ public class StringUtil {
         return new StringBuilder(s).reverse().toString();
     }
 
-    public static int parseInteger(char c) {
-        return parseInteger("" + c);
-    }
-
     public static List<List<String>> splitInGroupsSeparatedByEmptyLine(List<String> strings) {
         return splitInGroupsSeparatedBy(strings, "");
     }
@@ -38,9 +34,11 @@ public class StringUtil {
         return result;
     }
 
+    public static int parseInteger(char c) {
+        return parseInteger("" + c);
+    }
+
     public static int parseInteger(String s) {
         return Integer.parseInt(s);
     }
-
-
 }

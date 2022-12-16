@@ -1,6 +1,9 @@
 package aoc.days;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Coordinate {
     private int x;
@@ -9,6 +12,57 @@ public class Coordinate {
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public static Coordinate of(int x, int y) {
+        return new Coordinate(x, y);
+    }
+
+    public static List<Coordinate> parseMultipleSeparatedBy(String string, String separator) {
+        return Arrays.stream(string.split(separator)).map(Coordinate::parse).collect(Collectors.toList());
+    }
+
+    public static Coordinate parse(String string) {
+        String[] split = string.trim().replace("(", "").replace(")", "").split(",");
+        return new Coordinate(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+    }
+
+    public static Coordinate[] getAllCoordinatesBetween(Coordinate c1, Coordinate c2) {
+        int dx = Math.abs(c1.getX() - c2.getX());
+        int dy = Math.abs(c1.getY() - c2.getY());
+
+        Coordinate[] result = new Coordinate[Math.max(dx, dy) + 1];
+        Coordinate temp;
+        int counter = 0;
+        if (dx == 0) {
+            temp = c1.getY() < c2.getY() ? c1.copyOf() : c2.copyOf();
+            do {
+                result[counter++] = temp;
+                temp = new Coordinate(temp.getX(), temp.getY() + 1);
+            }
+            while (counter <= dy);
+
+        } else {
+            temp = c1.getX() < c2.getX() ? c1.copyOf() : c2.copyOf();
+            do {
+                result[counter++] = temp;
+                temp = new Coordinate(temp.getX() + 1, temp.getY());
+            }
+            while (counter <= dx);
+        }
+        return result;
+    }
+
+    public double distanceTo(Coordinate other) {
+        int dx = this.x - other.x;
+        int dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public int manhattanDistanceTo(Coordinate other) {
+        int dx = this.x - other.x;
+        int dy = this.y - other.y;
+        return Math.abs(dx) + Math.abs(dy);
     }
 
     public int getX() {
