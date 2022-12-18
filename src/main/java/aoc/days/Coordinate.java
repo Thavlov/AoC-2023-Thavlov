@@ -123,6 +123,18 @@ public class Coordinate {
         throw new RuntimeException("Error: No diagonal coordinate.");
     }
 
+    public Coordinate getRelativeX(int dx) {
+        return Coordinate.of(x + dx, y);
+    }
+
+    public Coordinate getRelativeY(int dy) {
+        return Coordinate.of(x, y + dy);
+    }
+
+    public Coordinate add(Coordinate other) {
+        return Coordinate.of(this.getX() + other.getX(), this.getY() + other.getY());
+    }
+
     public Coordinate copyOf() {
         return new Coordinate(x, y);
     }

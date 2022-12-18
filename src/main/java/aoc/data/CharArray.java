@@ -55,6 +55,15 @@ public class CharArray {
         return array[coordinate.getY()][coordinate.getX()];
     }
 
+    public boolean isOutOfBounds(Coordinate coordinate) {
+        try {
+            char c = array[coordinate.getY()][coordinate.getX()]; // TODO MORE GENTLE
+            return false;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return true;
+        }
+    }
+
     public char getValue(int x, int y) {
         return array[y][x];
     }
@@ -109,6 +118,14 @@ public class CharArray {
         for (Coordinate coordinate : allCoordinatesBetween) {
             setValue(coordinate, c);
         }
+    }
+
+    public int getWidth() {
+        return array[0].length;
+    }
+
+    public int getHeight() {
+        return array.length;
     }
 
     public void printArray() {

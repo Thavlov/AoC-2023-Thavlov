@@ -113,17 +113,17 @@ public final class FileUtil {
 
     public static Pair<String, String> splitByMiddle(final String s) {
         int length = s.length() / 2;
-        return new Pair<>(s.substring(0, length), s.substring(length));
+        return Pair.of(s.substring(0, length), s.substring(length));
     }
 
     private static Pair<String, Integer> toStringIntPair(String line) {
         final String[] split = line.split(" ");
-        return new Pair<>(split[0], Integer.parseInt(split[1]));
+        return Pair.of(split[0], Integer.parseInt(split[1]));
     }
 
     private static Pair<String, String> toStringPair(String line) {
         final String[] split = line.split(" ");
-        return new Pair<>(split[0], split[1]);
+        return Pair.of(split[0], split[1]);
     }
 
     public static <T> List<T> readFileToObjects(int day, Function<String, T> mapper) throws Exception {

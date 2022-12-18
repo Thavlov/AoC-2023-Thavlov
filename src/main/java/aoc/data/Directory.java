@@ -37,7 +37,7 @@ public class Directory {
     }
 
     public void addFile(String name, Long size) {
-        files.add(new Pair<>(name, size));
+        files.add(Pair.of(name, size));
     }
 
     public boolean hasSmallerSizeThan(long size) {

@@ -28,7 +28,7 @@ public class Range {
 
     public static Pair<Range, Range> parsePair(String s) {
         String[] split = s.split(",");
-        return new Pair<>(Range.parse(split[0]), Range.parse(split[1]));
+        return Pair.of(Range.parse(split[0]), Range.parse(split[1]));
     }
 
     public static List<Range> mergeRanges(final List<Range> ranges) {

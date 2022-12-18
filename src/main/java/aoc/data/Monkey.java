@@ -57,7 +57,7 @@ public class Monkey {
         newWorryLevel %= gcd;//;
 
         int newMonkey = getNewMonkey(newWorryLevel);
-        return new Pair<>(newMonkey, newWorryLevel);
+        return Pair.of(newMonkey, newWorryLevel);
     }
 
     private int getNewMonkey(long newWorryLevel) {

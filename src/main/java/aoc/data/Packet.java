@@ -30,6 +30,10 @@ public class Packet implements Comparable<Packet> {
         this.innerPackets = innerPackets;
     }
 
+    public static Pair<Packet, Packet> parseDualStringToPair(List<String> strings) {
+        return Pair.of(Packet.from(strings.get(0)), Packet.from(strings.get(1)));
+    }
+
     public static Packet from(String packetString) {
         if (hasNoInnerPacket(packetString)) {
             return new Packet(packetString);

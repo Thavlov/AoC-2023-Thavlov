@@ -12,9 +12,9 @@ public class Day13 extends Day {
     private List<Pair<Packet, Packet>> packages;
 
     protected void initialize() throws Exception {
-        List<String> input = FileUtil.readFileToStrings(getDay());
-        List<List<String>> separatedInput = StringUtil.splitInGroupsSeparatedByEmptyLine(input);
-        packages = separatedInput.stream().map(s -> new Pair<>(Packet.from(s.get(0)), Packet.from(s.get(1)))).collect(Collectors.toList());
+        final List<String> input = FileUtil.readFileToStrings(getDay());
+        final List<List<String>> separatedInput = StringUtil.splitInGroupsSeparatedByEmptyLine(input);
+        packages = separatedInput.stream().map(Packet::parseDualStringToPair).collect(Collectors.toList());
     }
 
     protected String getPart1Solution() {
@@ -40,9 +40,9 @@ public class Day13 extends Day {
 
         List<Packet> allPackagesSorted = allPackages.stream().sorted().collect(Collectors.toList());
 
-        int i1 = allPackagesSorted.indexOf(decoder1)+1;
-        int i2 = allPackagesSorted.indexOf(decoder2)+1;
+        int i1 = allPackagesSorted.indexOf(decoder1) + 1;
+        int i2 = allPackagesSorted.indexOf(decoder2) + 1;
 
-        return "" + (i1*i2);
+        return "" + (i1 * i2);
     }
 }

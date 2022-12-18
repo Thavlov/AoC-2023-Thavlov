@@ -10,7 +10,7 @@ public class Day04 extends Day {
     private List<Pair<Range, Range>> input;
 
     protected void initialize() throws Exception {
-        input = FileUtil.readFileToObjects(getDay(), Range::toPair);
+        input = FileUtil.readFileToObjects(getDay(), Range::parsePair);
     }
 
     protected String getPart1Solution() {
