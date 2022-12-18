@@ -31,5 +31,7 @@ public class AdventOfCode2022Solutions {
         SolutionUtil.solveDay(Day13.class);
         SolutionUtil.solveDay(Day14.class);
         SolutionUtil.solveDay(Day15.class);
+        SolutionUtil.solveDay(Day17.class);
+        SolutionUtil.solveDay(Day18.class);
     }
 }
