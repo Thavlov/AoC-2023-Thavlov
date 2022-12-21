@@ -1,9 +1,6 @@
 package aoc.util;
 
-import aoc.data.Monkey;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class StringUtil {
@@ -32,6 +29,15 @@ public class StringUtil {
         }
         result.add(tempArray);
         return result;
+    }
+
+    public static boolean isInteger(String string) {
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public static int parseInteger(char c) {
