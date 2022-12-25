@@ -98,6 +98,19 @@ public class Coordinate {
         return result;
     }
 
+    public Coordinate[] getCoordinateAdjacentIncludingDiagonal() {
+        Coordinate[] result = new Coordinate[8];
+        result[0] = new Coordinate(x + 1, y);
+        result[1] = new Coordinate(x - 1, y);
+        result[2] = new Coordinate(x, y - 1);
+        result[3] = new Coordinate(x, y + 1);
+        result[4] = new Coordinate(x - 1, y - 1);
+        result[5] = new Coordinate(x + 1, y - 1);
+        result[6] = new Coordinate(x - 1, y + 1);
+        result[7] = new Coordinate(x + 1, y + 1);
+        return result;
+    }
+
     public Coordinate getCoordinateAdjacentTo(final Coordinate other) {
         for (Coordinate coordinate : getCoordinateAdjacent()) {
             if (other.isAdjacentTo(coordinate)) {

@@ -2,12 +2,15 @@ package aoc.data;
 
 import aoc.days.Coordinate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CharArray {
     private static final char FILL_CHAR = '.';
     final private char[][] array;
+    private int xOffset = 0;
+    private int yOffset = 0;
 
     public CharArray(int size) {
         this(size, size);
@@ -32,6 +35,28 @@ public class CharArray {
         return new CharArray(array);
     }
 
+    public static CharArray fromCoordinates(List<Coordinate> coordinates) {
+        if (coordinates.isEmpty()) {
+            return new CharArray(1);
+        }
+        int minX = coordinates.stream().mapToInt(Coordinate::getX).min().orElseThrow(() -> new RuntimeException(""));
+        int maxX = coordinates.stream().mapToInt(Coordinate::getX).max().orElseThrow(() -> new RuntimeException(""));
+        int minY = coordinates.stream().mapToInt(Coordinate::getY).min().orElseThrow(() -> new RuntimeException(""));
+        int maxY = coordinates.stream().mapToInt(Coordinate::getY).max().orElseThrow(() -> new RuntimeException(""));
+
+        int xdim = minX > 0 ? maxX : maxX - minX;
+        int ydim = minY > 0 ? maxY : maxY - minY;
+
+        CharArray result = new CharArray(xdim+1, ydim+1);
+        result.xOffset = minX > 0 ? 0 : -minX;
+        result.yOffset = minY > 0 ? 0 : -minY;
+
+        for (Coordinate coordinate : coordinates) {
+            result.setValue(Coordinate.of(coordinate.getX(), coordinate.getY()), '#');
+        }
+        return result;
+    }
+
     public IntArray toIntArray(char base) {
         int[][] intArray = new int[array.length][array[0].length];
 
@@ -51,8 +76,12 @@ public class CharArray {
         return array.length;
     }
 
+    public char getValue(int x, int y) {
+        return array[y][x];
+    }
+
     public char getValue(Coordinate coordinate) {
-        return array[coordinate.getY()][coordinate.getX()];
+        return getValue(coordinate.getX() + xOffset, coordinate.getY() + yOffset);
     }
 
     public boolean isOutOfBounds(Coordinate coordinate) {
@@ -64,12 +93,8 @@ public class CharArray {
         }
     }
 
-    public char getValue(int x, int y) {
-        return array[y][x];
-    }
-
     public void setValue(Coordinate coordinate, char c) {
-        setValue(coordinate.getX(), coordinate.getY(), c);
+        setValue(coordinate.getX() + xOffset, coordinate.getY() + yOffset, c);
     }
 
     public void setValue(int x, int y, char c) {
@@ -107,6 +132,18 @@ public class CharArray {
         throw new RuntimeException("Coordinate not found");
     }
 
+    public List<Coordinate> toCoordinates() {
+        List<Coordinate> result = new ArrayList<>();
+        for (int x = 0; x < getHorizontalSize(); x++) {
+            for (int y = 0; y < getVerticalSize(); y++) {
+                if (getValue(x, y) == '#') {
+                    result.add(Coordinate.of(x - xOffset, y - yOffset));
+                }
+            }
+        }
+        return result;
+    }
+
     private void fillArray(char c) {
         for (char[] chars : array) {
             Arrays.fill(chars, c);
@@ -136,7 +173,7 @@ public class CharArray {
 
     public void printSection(int x, int dx, int y, int dy) {
         for (int i = y; i <= y + dy; i++) {
-            System.out.println(getHorizontalSliceAsString(i).substring(x, x + dx ));
+            System.out.println(getHorizontalSliceAsString(i).substring(x, x + dx));
         }
     }
 }
