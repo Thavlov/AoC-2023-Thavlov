@@ -98,6 +98,16 @@ public class Coordinate {
         return result;
     }
 
+    public Coordinate[] getCoordinateAdjacentIncludingSelf() {
+        Coordinate[] result = new Coordinate[5];
+        result[0] = new Coordinate(x + 1, y);
+        result[1] = new Coordinate(x - 1, y);
+        result[2] = new Coordinate(x, y - 1);
+        result[3] = new Coordinate(x, y + 1);
+        result[4] = new Coordinate(x, y);
+        return result;
+    }
+
     public Coordinate[] getCoordinateAdjacentIncludingDiagonal() {
         Coordinate[] result = new Coordinate[8];
         result[0] = new Coordinate(x + 1, y);

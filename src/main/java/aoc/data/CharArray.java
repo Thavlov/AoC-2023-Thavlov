@@ -47,12 +47,34 @@ public class CharArray {
         int xdim = minX > 0 ? maxX : maxX - minX;
         int ydim = minY > 0 ? maxY : maxY - minY;
 
-        CharArray result = new CharArray(xdim+1, ydim+1);
+        CharArray result = new CharArray(xdim + 1, ydim + 1);
         result.xOffset = minX > 0 ? 0 : -minX;
         result.yOffset = minY > 0 ? 0 : -minY;
 
         for (Coordinate coordinate : coordinates) {
             result.setValue(Coordinate.of(coordinate.getX(), coordinate.getY()), '#');
+        }
+        return result;
+    }
+
+    public static CharArray fromCoordinates(List<Coordinate> coordinates, int width, int height, char c) {
+        if (coordinates.isEmpty()) {
+            return new CharArray(1);
+        }
+        int minX = coordinates.stream().mapToInt(Coordinate::getX).min().orElseThrow(() -> new RuntimeException(""));
+        int maxX = coordinates.stream().mapToInt(Coordinate::getX).max().orElseThrow(() -> new RuntimeException(""));
+        int minY = coordinates.stream().mapToInt(Coordinate::getY).min().orElseThrow(() -> new RuntimeException(""));
+        int maxY = coordinates.stream().mapToInt(Coordinate::getY).max().orElseThrow(() -> new RuntimeException(""));
+
+        int xdim = minX > 0 ? maxX : maxX - minX;
+        int ydim = minY > 0 ? maxY : maxY - minY;
+
+        CharArray result = new CharArray(width, height);
+        result.xOffset = minX > 0 ? 0 : -minX;
+        result.yOffset = minY > 0 ? 0 : -minY;
+
+        for (Coordinate coordinate : coordinates) {
+            result.setValue(Coordinate.of(coordinate.getX(), coordinate.getY()), c);
         }
         return result;
     }
@@ -132,6 +154,18 @@ public class CharArray {
         throw new RuntimeException("Coordinate not found");
     }
 
+    public List<Coordinate> findAllCoordinatesWith(char c) {
+        List<Coordinate> result = new ArrayList<>();
+        for (int x = 0; x < getHorizontalSize(); x++) {
+            for (int y = 0; y < getVerticalSize(); y++) {
+                if (getValue(x, y) == c) {
+                    result.add(Coordinate.of(x, y));
+                }
+            }
+        }
+        return result;
+    }
+
     public List<Coordinate> toCoordinates() {
         List<Coordinate> result = new ArrayList<>();
         for (int x = 0; x < getHorizontalSize(); x++) {
@@ -175,5 +209,12 @@ public class CharArray {
         for (int i = y; i <= y + dy; i++) {
             System.out.println(getHorizontalSliceAsString(i).substring(x, x + dx));
         }
+    }
+
+    public CharArray copyOf() {
+        CharArray result = new CharArray(this.array);
+        result.xOffset = this.xOffset;
+        result.yOffset = this.yOffset;
+        return result;
     }
 }
