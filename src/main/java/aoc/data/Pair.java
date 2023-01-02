@@ -1,5 +1,7 @@
 package aoc.data;
 
+import java.util.Objects;
+
 public class Pair<T, T1> {
     final T first;
     final T1 second;
@@ -19,5 +21,23 @@ public class Pair<T, T1> {
 
     public T1 getSecond() {
         return second;
+    }
+
+    @Override
+    public String toString() {
+        return first.toString() + ":" + second.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pair<?, ?> pair = (Pair<?, ?>) o;
+        return first.equals(pair.first) && second.equals(pair.second);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(first, second);
     }
 }

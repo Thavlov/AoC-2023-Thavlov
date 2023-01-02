@@ -47,4 +47,13 @@ public class StringUtil {
     public static int parseInteger(String s) {
         return Integer.parseInt(s);
     }
+
+    public static String padRightToNewSize(String string, int newSize) {
+        final int paddingLength = newSize - string.length();
+        if (paddingLength < 0) {
+            throw new RuntimeException(String.format("Error: String '%s' cannot be padded to size %d.", string, newSize));
+        }
+
+        return string + " ".repeat(paddingLength);
+    }
 }

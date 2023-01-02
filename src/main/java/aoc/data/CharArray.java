@@ -131,6 +131,14 @@ public class CharArray {
         return new String(getHorizontalSlice(y));
     }
 
+    public Coordinate[] getHorizontalSliceACoordinate(int y) {
+        Coordinate[] slice = new Coordinate[array[y].length];
+        for (int x = 0; x < array[y].length; x++) {
+            slice[x] = Coordinate.of(x, y);
+        }
+        return slice;
+    }
+
     public char[] getVerticalSlice(int x) {
         char[] slice = new char[array.length];
         for (int y = 0; y < array.length; y++) {
@@ -141,6 +149,14 @@ public class CharArray {
 
     public String getVerticalSliceAsString(int x) {
         return new String(getVerticalSlice(x));
+    }
+
+    public Coordinate[] getVerticalSliceAsCoordinates(int x) {
+        Coordinate[] slice = new Coordinate[array.length];
+        for (int y = 0; y < array.length; y++) {
+            slice[y] = Coordinate.of(x, y);
+        }
+        return slice;
     }
 
     public Coordinate findCoordinateWith(char c) {
