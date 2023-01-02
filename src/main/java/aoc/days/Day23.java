@@ -19,7 +19,7 @@ public class Day23 extends Day {
         final List<String> input = FileUtil.readFileToStrings(getDay());
         final CharArray inputMap = CharArray.fromStrings(input);
         elves = inputMap.toCoordinates().stream().map(Elf::new).collect(Collectors.toList());
-        Elf.PROPOSE_METHOD++;
+        Elf.PROPOSE_METHOD = 0;
     }
 
     protected String getPart1Solution() {
@@ -33,16 +33,13 @@ public class Day23 extends Day {
 
             if (PRINT_MAPS) {
                 System.out.println("Round " + (counter + 1));
-                List<Coordinate> coordinates = elves.stream().map(Elf::getPosition).collect(Collectors.toList());
-                CharArray charArray = CharArray.fromCoordinates(coordinates);
+                CharArray charArray = CharArray.fromCoordinates(elvesPositions);
                 System.out.println();
                 charArray.printArray();
             }
         }
 
-
         List<Coordinate> elvesPositions = elves.stream().map(Elf::getPosition).collect(Collectors.toList());
-
         int minX = elvesPositions.stream().mapToInt(Coordinate::getX).min().getAsInt();
         int maxX = elvesPositions.stream().mapToInt(Coordinate::getX).max().getAsInt();
         int minY = elvesPositions.stream().mapToInt(Coordinate::getY).min().getAsInt();
