@@ -1,50 +1,58 @@
 package aoc.days;
 
-import aoc.util.AoCConstants;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
+import static aoc.util.AoCConstants.PRINT_EXECUTION_TIME;
 import static aoc.util.AoCConstants.COPY_TO_CLIPBOARD;
 
 public abstract class Day {
-    public void solve() {
+
+    public void solveAndPrint() {
         try {
             long startTime = System.currentTimeMillis();
-            solvePart1();
-            if (AoCConstants.PRINT_EXECUTION_TIME) {
-                System.out.println(String.format("Part 1 solved in %d ms.", ((System.currentTimeMillis() - startTime))));
+            solveAndPrintPart1();
+            if (PRINT_EXECUTION_TIME) {
+                System.out.printf("Part 1 solved in %d ms.%n", System.currentTimeMillis() - startTime);
             }
             startTime = System.currentTimeMillis();
-            solvePart2();
-            if (AoCConstants.PRINT_EXECUTION_TIME) {
-                System.out.println(String.format("Part 2 solved in %d ms.", ((System.currentTimeMillis() - startTime))));
+            solveAndPrintPart2();
+            if (PRINT_EXECUTION_TIME) {
+                System.out.printf("Part 2 solved in %d ms.%n", System.currentTimeMillis() - startTime);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void solvePart1() throws Exception {
-        initialize();
-        final String solution = getPart1Solution();
+    public void solveAndPrintPart1() throws Exception {
+        final String solution = solvePart1();
         System.out.printf(" > Solution 1 to day %02d: %s%n", getDay(), solution);
         terminate(solution);
     }
 
-    public void solvePart2() throws Exception {
+    protected String solvePart1() throws Exception {
         initialize();
-        final String solution = getPart2Solution();
+        return getPart1Solution().toString();
+    }
+
+    public void solveAndPrintPart2() throws Exception {
+        final String solution = solvePart2();
         System.out.printf(" > Solution 2 to day %02d: %s%n", getDay(), solution);
         terminate(solution);
     }
 
+    protected String solvePart2() throws Exception {
+        initialize();
+        return getPart2Solution().toString();
+    }
+
     protected abstract void initialize() throws Exception;
 
-    protected abstract String getPart1Solution() throws Exception;
+    protected abstract Object getPart1Solution() throws Exception;
 
-    protected abstract String getPart2Solution() throws Exception;
+    protected abstract Object getPart2Solution() throws Exception;
 
     protected int getDay() {
         return Integer.parseInt(this.getClass().getSimpleName().substring(3));
