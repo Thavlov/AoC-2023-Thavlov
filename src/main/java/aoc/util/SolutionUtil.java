@@ -9,7 +9,7 @@ public class SolutionUtil {
 
     public static <T extends Day> void solveDay(final Class<T> dayClass) {
         try {
-            dayClass.getDeclaredConstructor().newInstance().solve();
+            dayClass.getDeclaredConstructor().newInstance().solveAndPrint();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -17,7 +17,7 @@ public class SolutionUtil {
 
     public static <T extends Day> void solvePart1(final Class<T> dayClass) {
         try {
-            dayClass.getDeclaredConstructor().newInstance().solvePart1();
+            dayClass.getDeclaredConstructor().newInstance().solveAndPrintPart1();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +25,7 @@ public class SolutionUtil {
 
     public static <T extends Day> void solvePart2(final Class<T> dayClass) {
         try {
-            dayClass.getDeclaredConstructor().newInstance().solvePart2();
+            dayClass.getDeclaredConstructor().newInstance().solveAndPrintPart2();
         } catch (Exception e) {
             e.printStackTrace();
         }

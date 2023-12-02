@@ -4,7 +4,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static aoc.util.AoCConstants.RUN_EXAMPLE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class Day01Test {
     private static Day dayToTest;
@@ -21,15 +22,23 @@ class Day01Test {
 
     @Test
     void testPart1Solution() throws Exception {
-        final String part1Solution = dayToTest.getPart1Solution();
+        final String part1Solution = dayToTest.solvePart1();
 
-        assertThat(part1Solution).isEqualTo("72718");
+        if (RUN_EXAMPLE) {
+            assertThat(part1Solution).isEqualTo("142");
+        } else {
+            assertThat(part1Solution).isEqualTo("54450");
+        }
     }
 
     @Test
     void testPart2Solution() throws Exception {
-        final String part2Solution = dayToTest.getPart2Solution();
+        final String part1Solution = dayToTest.solvePart2();
 
-        assertThat(part2Solution).isEqualTo("213089");
+        if (RUN_EXAMPLE) {
+            assertThat(part1Solution).isEqualTo("281");
+        } else {
+            assertThat(part1Solution).isEqualTo("54265");
+        }
     }
 }

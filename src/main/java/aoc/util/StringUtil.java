@@ -56,4 +56,41 @@ public class StringUtil {
 
         return string + " ".repeat(paddingLength);
     }
+
+    public static int parseNumberFromString(String string) {
+        switch (string) {
+            case "0":
+            case "zero":
+                return 0;
+            case "1":
+            case "one":
+                return 1;
+            case "2":
+            case "two":
+                return 2;
+            case "3":
+            case "three":
+                return 3;
+            case "4":
+            case "four":
+                return 4;
+            case "5":
+            case "five":
+                return 5;
+            case "6":
+            case "six":
+                return 6;
+            case "7":
+            case "seven":
+                return 7;
+            case "8":
+            case "eight":
+                return 8;
+            case "9":
+            case "nine":
+                return 9;
+            default:
+                throw new IllegalArgumentException(String.format("Error: String '%s' cannot be parsed to number.", string));
+        }
+    }
 }

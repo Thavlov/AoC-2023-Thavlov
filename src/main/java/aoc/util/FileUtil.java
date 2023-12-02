@@ -142,6 +142,22 @@ public final class FileUtil {
         }
     }
 
+    public static List<List<String>> readFileGroupByEmptyLine(int day) throws Exception {
+        final List<String> input = readFileToStrings(day);
+        final List<List<String>> result = new ArrayList<>();
+
+        List<String> tempArray = new ArrayList<>();
+        for (String inputLine : input) {
+            if (inputLine.isEmpty()) {
+                result.add(tempArray);
+                tempArray = new ArrayList<>();
+                continue;
+            }
+            tempArray.add(inputLine);
+        }
+        return result;
+    }
+
     public static List<List<String>> readFileToStringInGroupsOf(int day, int groupNum) throws Exception {
         final List<String> input = readFileToStrings(day);
         final List<List<String>> result = new ArrayList<>();
