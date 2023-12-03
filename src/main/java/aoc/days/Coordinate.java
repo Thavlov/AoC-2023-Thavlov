@@ -3,6 +3,7 @@ package aoc.days;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Coordinate {
@@ -119,6 +120,16 @@ public class Coordinate {
         result[6] = new Coordinate(x - 1, y + 1);
         result[7] = new Coordinate(x + 1, y + 1);
         return result;
+    }
+
+    public Coordinate[] getCoordinateAdjacentIncludingDiagonalInsideBounds(int dx, int dy) {
+        return Arrays.stream(getCoordinateAdjacentIncludingDiagonal())
+                .filter(isWithinBounds(dx, dy))
+                .toArray(Coordinate[]::new);
+    }
+
+    private Predicate<Coordinate> isWithinBounds(int dx, int dy) {
+        return c -> c.getX() >= 0 && c.getX() < dx && c.getY() >= 0 && c.getY() < dy;
     }
 
     public Coordinate getCoordinateAdjacentTo(final Coordinate other) {

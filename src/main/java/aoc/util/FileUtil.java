@@ -99,6 +99,15 @@ public final class FileUtil {
         return map;
     }
 
+    public static char[][] readFileToCharMap(int day) throws Exception {
+        final List<String> strings = readFileToStrings(day);
+        char[][] map = new char[strings.size()][];
+        for (int i = 0; i < map.length; i++) {
+            map[i] = strings.get(i).toCharArray();
+        }
+        return map;
+    }
+
     public static List<Pair<String, String>> readFileToStringPair(int day) throws Exception {
         return readFileToPair(day, FileUtil::toStringPair);
     }

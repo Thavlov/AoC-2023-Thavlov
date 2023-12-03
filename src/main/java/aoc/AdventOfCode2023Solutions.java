@@ -17,5 +17,7 @@ public class AdventOfCode2023Solutions {
         System.out.println("Advent of Code 2023 solutions:");
 
         SolutionUtil.solveDay(Day01.class);
+        SolutionUtil.solveDay(Day02.class);
+        SolutionUtil.solveDay(Day03.class);
     }
 }
