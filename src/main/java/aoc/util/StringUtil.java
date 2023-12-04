@@ -8,6 +8,14 @@ public class StringUtil {
         //EMPTY
     }
 
+    public static boolean isNotNullOrEmpty(String s) {
+        return !isNullOrEmpty(s);
+    }
+
+    public static boolean isNullOrEmpty(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
     public static String reverseString(String s) {
         return new StringBuilder(s).reverse().toString();
     }
