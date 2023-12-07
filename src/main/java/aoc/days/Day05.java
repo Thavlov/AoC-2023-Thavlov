@@ -1,71 +1,141 @@
 package aoc.days;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import aoc.data.Range;
 import aoc.util.FileUtil;
 import aoc.util.StringUtil;
 
-public class Day04 extends Day {
-    private List<String> input;
+public class Day05 extends Day {
+
+    private List<Long> seeds;
+    private Map<Range, Long> seedToSoilMap;
+    private Map<Range, Long> soilToFertilizerMap;
+    private Map<Range, Long> fertilizerToWaterMap;
+    private Map<Range, Long> waterToLightMap;
+    private Map<Range, Long> lightToTemperatureMap;
+    private Map<Range, Long> temperatureToHumidityMap;
+    private Map<Range, Long> humidityToLocationMap;
 
     protected void initialize() throws Exception {
-        input = FileUtil.readFileToStrings(getDay());
+        final List<List<String>> input = FileUtil.readFileGroupByEmptyLine(getDay());
+
+        seeds = StringUtil.parseListOfNumbers(input.get(0).get(0).replace("seeds:", ""));
+
+        seedToSoilMap = parseMapAndInsertMissingRanges(input.get(1));
+        soilToFertilizerMap = parseMapAndInsertMissingRanges(input.get(2));
+        fertilizerToWaterMap = parseMapAndInsertMissingRanges(input.get(3));
+        waterToLightMap = parseMapAndInsertMissingRanges(input.get(4));
+        lightToTemperatureMap = parseMapAndInsertMissingRanges(input.get(5));
+        temperatureToHumidityMap = parseMapAndInsertMissingRanges(input.get(6));
+        humidityToLocationMap = parseMapAndInsertMissingRanges(input.get(7));
     }
 
     protected Object getPart1Solution() throws Exception {
-        return input.stream()
-                .map(this::getNumberOfMatches)
-                .mapToInt(this::resolveScore)
-                .sum();
+        List<Long> values = getMappedValues(seeds, seedToSoilMap);
+        values = getMappedValues(values, soilToFertilizerMap);
+        values = getMappedValues(values, fertilizerToWaterMap);
+        values = getMappedValues(values, waterToLightMap);
+        values = getMappedValues(values, lightToTemperatureMap);
+        values = getMappedValues(values, temperatureToHumidityMap);
+        values = getMappedValues(values, humidityToLocationMap);
+
+        return values.stream().mapToLong(Long::valueOf).min().getAsLong();
     }
 
     protected Object getPart2Solution() throws Exception {
-        final int[] cards = new int[input.size()];
-        Arrays.fill(cards, 1);
+        List<Range> values = createSeedRanges(seeds);
+        values = getMappedRanges(values, seedToSoilMap);
+        values = getMappedRanges(values, soilToFertilizerMap);
+        values = getMappedRanges(values, fertilizerToWaterMap);
+        values = getMappedRanges(values, waterToLightMap);
+        values = getMappedRanges(values, lightToTemperatureMap);
+        values = getMappedRanges(values, temperatureToHumidityMap);
+        values = getMappedRanges(values, humidityToLocationMap);
 
-        int card = 1;
-        for (String string : input) {
-            int matches = getNumberOfMatches(string);
-
-            int numberOfCards = cards[card - 1];
-            for (int i = card; i < card + matches; i++) {
-                cards[i] += numberOfCards;
-            }
-            card++;
-        }
-
-        return Arrays.stream(cards).sum();
+        return values.stream().mapToLong(Range::getFrom).min().getAsLong();
     }
 
-    private int getNumberOfMatches(String string) {
-        final String[] split = string.split(":");
-        final String[] split1 = split[1].split("\\|");
+    private List<Long> getMappedValues(List<Long> seeds, Map<Range, Long> map) {
+        return seeds.stream().map(s -> getMappedValue(s, map)).collect(Collectors.toList());
+    }
 
-        List<Integer> firstSet = parseNumberFromString(split1[0]);
-        List<Integer> secondSet = parseNumberFromString(split1[1]);
-        int matches = 0;
-        for (Integer integer : secondSet) {
-            if (firstSet.contains(integer)) {
-                matches++;
+    private Long getMappedValue(Long seed, Map<Range, Long> map) {
+        for (Range range : map.keySet()) {
+            if (range.isValueInRange(seed)) {
+                return seed + map.get(range);
             }
         }
-        return matches;
+        return seed;
     }
 
-    private List<Integer> parseNumberFromString(String string) {
-        return Arrays.stream(string.trim().split(" ")).filter(StringUtil::isNotNullOrEmpty).map(Integer::parseInt).collect(Collectors.toList());
+    private List<Range> createSeedRanges(List<Long> seeds) {
+        List<Range> result = new ArrayList<>();
+
+        for (int i = 0; i < seeds.size(); i += 2) {
+            result.add(Range.ofWidth(seeds.get(i), seeds.get(i + 1)));
+        }
+        return result;
     }
 
-    private int resolveScore(int found) {
-        if (found == 0) {
-            return 0;
+    private List<Range> getMappedRanges(List<Range> seeds, Map<Range, Long> map) {
+        return seeds.stream().map(s -> getMappedRange(s, map)).flatMap(List::stream).collect(Collectors.toList());
+    }
+
+    private List<Range> getMappedRange(Range range, Map<Range, Long> map) {
+        List<Range> ranges = cropRange(range, map);
+        return shiftRanges(ranges, map);
+    }
+
+    private List<Range> cropRange(Range range, Map<Range, Long> map) {
+        final List<Range> result = new ArrayList<>();
+        for (Range mapRange : map.keySet()) {
+            if (range.isCompletelyOverlappedBy(mapRange)) {
+                result.add(range);
+            } else if (range.isPartlyOverlappedBy(mapRange)) {
+                result.add(range.getIntersectionWith(mapRange));
+            }
         }
-        int score = 1;
-        for (int i = 1; i < found; i++) {
-            score *= 2;
+        return result;
+    }
+
+    private List<Range> shiftRanges(List<Range> ranges, Map<Range, Long> map) {
+        List<Range> result = new ArrayList<>();
+        for (Range range : ranges) {
+            for (Range mapRange : map.keySet()) {
+                if (range.isCompletelyOverlappedBy(mapRange)) {
+                    long shift = map.get(mapRange);
+                    result.add(Range.fromWithShift(range, shift));
+                    break;
+                }
+            }
         }
-        return score;
+        return result;
+    }
+
+    private Map<Range, Long> parseMapAndInsertMissingRanges(List<String> strings) {
+        Map<Range, Long> result = new TreeMap<>();
+        for (String string : strings.subList(1, strings.size())) {
+            List<Long> integers = StringUtil.parseListOfNumbers(string);
+            Range range = Range.of(integers.get(1), integers.get(1) + integers.get(2) - 1);
+            Long offset = integers.get(0) - integers.get(1);
+            result.put(range, offset);
+        }
+
+        long value = -1;
+        for (Range range : new TreeSet<>(result.keySet())) {
+            if (value + 1 != range.getFrom()) {
+                Range missingRange = Range.of(value + 1, range.getFrom() - 1);
+                result.put(missingRange, 0L);
+            }
+            value = range.getTo();
+        }
+        result.put(Range.of(value + 1, Long.MAX_VALUE), 1L);
+        return result;
     }
 }

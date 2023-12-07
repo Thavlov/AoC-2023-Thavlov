@@ -40,8 +40,8 @@ public class Day04 extends Day {
     }
 
     private int getNumberOfMatches(String string) {
-        final String[] split = string.split(":");
-        final String[] split1 = split[1].split("\\|");
+        final String[] split = string.split(StringUtil.DELIMITER_COLON);
+        final String[] split1 = split[1].split(StringUtil.DELIMITER_BAR);
 
         List<Integer> firstSet = parseNumberFromString(split1[0]);
         List<Integer> secondSet = parseNumberFromString(split1[1]);

@@ -1,0 +1,51 @@
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  push_to_unions_aoc:
+    name: Push changes to Unions AoC
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out source
+      run: |
+        mkdir this
+        cd this
+        git clone https://github.com/Thavlov/AoC-2023-Thavlov.git
+
+    - name: Get last commit message
+      id: commit-message
+      run: |
+        cd this/AoC-2023-Thavlov
+        echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+    - name: Check out target
+      run: |
+        mkdir that
+        cd that
+        git clone https://github.com/Advent-of-Code-Netcompany-Unions/AoC-2023-Thavlov.git
+
+    - name: Copy changes
+      run: |          
+        cp -rf ./this/AoC-2023-Thavlov/* ./that/AoC-2023-Thavlov/                
+        cd that/AoC-2023-Thavlov        
+        git status
+
+    - name: Git config
+      run: |
+        cd that/AoC-2023-Thavlov        
+        git config user.email "you@example.com"
+        git config user.name "Thavlov"
+
+    - name: Stage changes
+      run: |
+        cd that/AoC-2023-Thavlov
+        git add *        
+        git status        
+
+    - name: Commit and push
+      run: |
+        cd that/AoC-2023-Thavlov
+        git commit -m "${{ steps.commit-message.outputs.message }}"
+        git push https://token:${{ secrets.UNIONS_AOC_ACCESS_TOKEN }}@github.com/Advent-of-Code-Netcompany-Unions/AoC-2023-Thavlov.git

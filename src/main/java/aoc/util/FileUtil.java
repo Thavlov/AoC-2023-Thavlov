@@ -164,6 +164,7 @@ public final class FileUtil {
             }
             tempArray.add(inputLine);
         }
+        result.add(tempArray);
         return result;
     }
 

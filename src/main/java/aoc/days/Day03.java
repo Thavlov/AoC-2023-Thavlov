@@ -1,5 +1,6 @@
 package aoc.days;
 
+import aoc.data.Coordinate;
 import aoc.util.FileUtil;
 
 import java.util.*;

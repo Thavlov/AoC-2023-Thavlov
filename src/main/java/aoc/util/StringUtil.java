@@ -1,9 +1,18 @@
 package aoc.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StringUtil {
+    public static final String DELIMITER_COMMA = ",";
+    public static final String DELIMITER_COLON = ":";
+    public static final String DELIMITER_SEMICOLON = ";";
+    public static final String DELIMITER_BAR = "\\|";
+    public static final String EMPTY = "";
+    public static final String SPACE = " ";
+
     private StringUtil() {
         //EMPTY
     }
@@ -20,8 +29,12 @@ public class StringUtil {
         return new StringBuilder(s).reverse().toString();
     }
 
+    public static List<Long> parseListOfNumbers(String string) {
+        return Arrays.stream(string.trim().split(SPACE)).filter(StringUtil::isNotNullOrEmpty).map(Long::parseLong).collect(Collectors.toList());
+    }
+
     public static List<List<String>> splitInGroupsSeparatedByEmptyLine(List<String> strings) {
-        return splitInGroupsSeparatedBy(strings, "");
+        return splitInGroupsSeparatedBy(strings, EMPTY);
     }
 
     public static List<List<String>> splitInGroupsSeparatedBy(List<String> strings, String separateBy) {
@@ -49,7 +62,7 @@ public class StringUtil {
     }
 
     public static int parseInteger(char c) {
-        return parseInteger("" + c);
+        return parseInteger(EMPTY + c);
     }
 
     public static int parseInteger(String s) {
@@ -62,7 +75,7 @@ public class StringUtil {
             throw new RuntimeException(String.format("Error: String '%s' cannot be padded to size %d.", string, newSize));
         }
 
-        return string + " ".repeat(paddingLength);
+        return string + SPACE.repeat(paddingLength);
     }
 
     public static int parseNumberFromString(String string) {

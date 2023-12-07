@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import aoc.util.FileUtil;
+import aoc.util.StringUtil;
 
 public class Day02 extends Day {
     private List<String> input;
@@ -53,7 +54,7 @@ public class Day02 extends Day {
 
     private int getMaxCubesOfColor(String string, String color) {
         String regex = " (\\d+) " + color;
-        String[] split = string.split(";");
+        String[] split = string.split(StringUtil.DELIMITER_SEMICOLON);
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher;
