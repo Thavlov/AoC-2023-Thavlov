@@ -1,99 +1,158 @@
 package aoc.data;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.OptionalLong;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
-public class Range {
-    private final int from;
-    private final int to;
+public class Range implements Comparable<Range> {
+    private final long from;
+    private final long to;
 
-    public Range(int from, int to) {
-        if (from > to) {
+    public Range(long from, long to) {
+        if (from > to || from < 0) {
             throw new RuntimeException("Error creating range: from should be less than to.");
         }
         this.from = from;
         this.to = to;
     }
 
-    public static Range of(int from, int to) {
+    public static Range of(long from, long to) {
         return new Range(from, to);
     }
 
-    public static Range parse(String string) {
-        final String[] split = string.split("-");
-        return new Range(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+    public static Range from(Range other) {
+        return new Range(other.getFrom(), other.getTo());
     }
 
-    public static Pair<Range, Range> parsePair(String s) {
-        String[] split = s.split(",");
-        return Pair.of(Range.parse(split[0]), Range.parse(split[1]));
+    public static Range ofWidth(long from, long width) {
+        return new Range(from, from + width - 1);
     }
 
-    public static List<Range> mergeRanges(final List<Range> ranges) {
-        List<Range> result = new ArrayList<>();
-
-        List<Range> sortedRanges = List.copyOf(ranges).stream().sorted(Comparator.comparingInt(Range::getFrom)).collect(Collectors.toList());
-
-        Range range;
-
-        for (int i = 0; i < sortedRanges.size(); i++) {
-            range = sortedRanges.get(i);
-            for (int j = i + 1; j < sortedRanges.size(); j++) {
-                if (isOverlapping(range, sortedRanges.get(j))) {
-                    range = mergeOverlappingRanges(range, sortedRanges.get(j));
-                    i++;
-                }
-            }
-            result.add(range);
-        }
-
-        return result;
+    public static Range fromWithShift(Range range, long dx) {
+        return new Range(range.getFrom() + dx, range.getTo() + dx);
     }
 
-    private static Range mergeOverlappingRanges(Range first, Range second) {
-        if (!isOverlapping(first, second)) {
-            throw new RuntimeException("Error merging ranges: ranges are not overlapping.");
-        }
-
-        return new Range(Math.min(first.from, second.from), Math.max(first.to, second.to));
-    }
-
-    public static boolean isInRange(Pair<Range, Range> pair) {
-        return pair.getFirst().isInRangeOther(pair.getSecond()) || pair.getSecond().isInRangeOther(pair.getFirst());
-    }
-
-    private static boolean isOverlapping(Range first, Range second) {
-        return first.isValueInRange(second.getFrom()) || first.isValueInRange(second.getTo()) || first.isCompletelyOverlappedBy(second) || second.isCompletelyOverlappedBy(first);
-    }
-
-    public static boolean isNotOverlapping(Pair<Range, Range> pair) {
-        return isNotOverlapping(pair.getFirst(), pair.getSecond());
-    }
-
-    private static boolean isNotOverlapping(Range first, Range second) {
-        return first.from <= second.to && second.from <= first.to;
-    }
-
-    public boolean isInRangeOther(Range other) {
-        return this.from <= other.from && this.to >= other.to;
-    }
-
-    private boolean isValueInRange(int value) {
-        return from <= value && value <= to;
-    }
-
-    private boolean isCompletelyOverlappedBy(Range other) {
-        return other.from <= from && to <= other.to;
-    }
-
-
-    public int getFrom() {
+    public long getFrom() {
         return from;
     }
 
-    public int getTo() {
+    public long getTo() {
         return to;
+    }
+
+    public boolean isValueInRange(long value) {
+        return from <= value && value <= to;
+    }
+
+    private boolean isValueInRangeExclusive(long value) {
+        return from < value && value < to;
+    }
+
+    public List<Long> getAllValuesInRange() {
+        return LongStream.range(from, to + 1).boxed().collect(Collectors.toList());
+    }
+
+    private boolean isOverlapping(Range other) {
+        return this.isValueInRange(other.getFrom()) || this.isValueInRange(other.getTo()) || this.isCompletelyOverlappedBy(other) || other.isCompletelyOverlappedBy(this);
+    }
+
+    public boolean isCompletelyOverlappedBy(Range other) {
+        return other.from <= from && to <= other.to;
+    }
+
+    public boolean isPartlyOverlappedBy(Range other) {
+        return this.isValueInRange(other.getFrom()) || this.isValueInRange(other.getTo());
+    }
+
+    public Range getIntersectionWith(Range other) {
+        if (this.isCompletelyOverlappedBy(other)) {
+            return Range.from(this);
+        }
+
+        if (other.isCompletelyOverlappedBy(this)) {
+            return Range.from(other);
+        }
+
+        if (this.isPartlyOverlappedBy(other)) {
+            return Range.of(Math.max(this.getFrom(), other.getFrom()), Math.min(this.getTo(), other.getTo()));
+        }
+
+        throw new RuntimeException("Error finding range intersection: Ranges does not overlap.");
+    }
+
+    public List<Range> getDisjointWith(final Range other) {
+        final List<Range> result = new ArrayList<>();
+        if (this.isPartlyOverlappedBy(other)) {
+            if (this.getFrom() != other.getFrom()) {
+                result.add(Range.of(Math.min(this.getFrom(), other.getFrom()), Math.max(this.getFrom(), other.getFrom()) - 1));
+            }
+            if (this.getTo() != other.getTo()) {
+                result.add(Range.of(Math.min(this.getTo(), other.getTo()) + 1, Math.max(this.getTo(), other.getTo())));
+            }
+            return result;
+        }
+
+        if (this.isCompletelyOverlappedBy(other)) {
+            if (this.getFrom() != other.getFrom()) {
+                result.add(Range.of(other.getFrom(), this.getFrom() - 1));
+            }
+            if (this.getTo() != other.getTo()) {
+                result.add(Range.of(this.getTo() + 1, other.getTo()));
+            }
+            return result;
+        }
+
+        return Collections.emptyList();
+    }
+
+    public OptionalLong getIntersectionPoint(Range other) {
+        if (this.isValueInRange(other.getFrom())) {
+            return OptionalLong.of(other.getFrom());
+        }
+        if (this.isValueInRange(other.getTo())) {
+            return OptionalLong.of(other.getTo());
+        }
+        return OptionalLong.empty();
+    }
+
+    public OptionalLong getIntersectionPointExclusive(Range other) {
+        if (this.isValueInRangeExclusive(other.getFrom())) {
+            return OptionalLong.of(other.getFrom());
+        }
+        if (this.isValueInRangeExclusive(other.getTo())) {
+            return OptionalLong.of(other.getTo());
+        }
+        return OptionalLong.empty();
+    }
+
+    public List<Range> splitAround(long value) {
+        return List.of(Range.of(from, value - 1), Range.of(value, to));
+    }
+
+    @Override
+    public int compareTo(Range other) {
+        return Long.compare(this.getFrom(), other.getFrom());
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Range range = (Range) o;
+        return from == range.from && to == range.to;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, to);
     }
 }
