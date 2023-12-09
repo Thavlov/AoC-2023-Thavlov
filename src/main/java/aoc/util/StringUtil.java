@@ -29,6 +29,10 @@ public class StringUtil {
         return new StringBuilder(s).reverse().toString();
     }
 
+    public static Integer[] parseListOfIntegers(String string) {
+        return Arrays.stream(string.split(StringUtil.SPACE)).map(Integer::parseInt).toArray(Integer[]::new);
+    }
+
     public static List<Long> parseListOfNumbers(String string) {
         return Arrays.stream(string.trim().split(SPACE)).filter(StringUtil::isNotNullOrEmpty).map(Long::parseLong).collect(Collectors.toList());
     }
