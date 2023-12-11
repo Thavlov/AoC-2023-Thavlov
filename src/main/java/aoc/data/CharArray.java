@@ -190,12 +190,12 @@ public class CharArray {
         return result;
     }
 
-    public List<CoordinateLong> findAllCoordinateLongsWith(char c) {
-        List<CoordinateLong> result = new ArrayList<>();
+    public List<Coordinate> findAllCoordinateLongsWith(char c) {
+        List<Coordinate> result = new ArrayList<>();
         for (int x = 0; x < getHorizontalSize(); x++) {
             for (int y = 0; y < getVerticalSize(); y++) {
                 if (getValue(x, y) == c) {
-                    result.add(CoordinateLong.of(x, y));
+                    result.add(Coordinate.of(x, y));
                 }
             }
         }
