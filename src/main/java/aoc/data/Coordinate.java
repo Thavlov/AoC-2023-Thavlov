@@ -99,6 +99,12 @@ public class Coordinate {
         return result;
     }
 
+    public Coordinate[] getCoordinateAdjacentInsideBounds(int dx, int dy) {
+        return Arrays.stream(getCoordinateAdjacent())
+                .filter(isWithinBounds(dx, dy))
+                .toArray(Coordinate[]::new);
+    }
+
     public Coordinate[] getCoordinateAdjacentIncludingSelf() {
         Coordinate[] result = new Coordinate[5];
         result[0] = new Coordinate(x + 1, y);
