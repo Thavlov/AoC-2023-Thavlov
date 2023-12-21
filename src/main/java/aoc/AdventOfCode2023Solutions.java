@@ -27,5 +27,15 @@ public class AdventOfCode2023Solutions {
         SolutionUtil.solveDay(Day09.class);
         SolutionUtil.solveDay(Day10.class);
         SolutionUtil.solveDay(Day11.class);
+        SolutionUtil.solveDay(Day12.class);
+        SolutionUtil.solveDay(Day13.class);
+        SolutionUtil.solveDay(Day14.class);
+        SolutionUtil.solveDay(Day15.class);
+        SolutionUtil.solveDay(Day16.class);
+        SolutionUtil.solveDay(Day17.class);
+        SolutionUtil.solveDay(Day18.class);
+        SolutionUtil.solveDay(Day19.class);
+        SolutionUtil.solveDay(Day20.class);
+        SolutionUtil.solveDay(Day21.class);
     }
 }
