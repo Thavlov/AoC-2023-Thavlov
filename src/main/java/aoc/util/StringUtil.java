@@ -33,8 +33,16 @@ public class StringUtil {
         return Arrays.stream(string.split(StringUtil.SPACE)).map(Integer::parseInt).toArray(Integer[]::new);
     }
 
+    public static List<Integer> parseListOfIntegers(String string, String separator) {
+        return Arrays.stream(string.trim().split(separator)).filter(StringUtil::isNotNullOrEmpty).map(Integer::parseInt).collect(Collectors.toList());
+    }
+
     public static List<Long> parseListOfNumbers(String string) {
-        return Arrays.stream(string.trim().split(SPACE)).filter(StringUtil::isNotNullOrEmpty).map(Long::parseLong).collect(Collectors.toList());
+        return parseListOfNumbers(string, SPACE);
+    }
+
+    public static List<Long> parseListOfNumbers(String string, String separator) {
+        return Arrays.stream(string.trim().split(separator)).filter(StringUtil::isNotNullOrEmpty).map(Long::parseLong).collect(Collectors.toList());
     }
 
     public static List<List<String>> splitInGroupsSeparatedByEmptyLine(List<String> strings) {
