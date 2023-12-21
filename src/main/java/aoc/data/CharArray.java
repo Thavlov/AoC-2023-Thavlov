@@ -155,6 +155,16 @@ public class CharArray {
         return slice;
     }
 
+    public void setVerticalSlice(int x, char[] chars) {
+        for (int y = 0; y < array.length; y++) {
+            setValue(x, y, chars[y]);
+        }
+    }
+
+    public void setHorizontalSlice(int y, char[] slice) {
+        array[y] = slice;
+    }
+
     public String getVerticalSliceAsString(int x) {
         return new String(getVerticalSlice(x));
     }
@@ -258,11 +268,11 @@ public class CharArray {
     }
 
     public CharArray copyOf() {
-//        char[][] newArray = new char[array.length][array[0].length];
-//
-//        for (int i = 0; i < array.length; i++) {
-//            newArray[i] = Arrays.copyOf(array[i], array[i].length);
-//        }
+        //        char[][] newArray = new char[array.length][array[0].length];
+        //
+        //        for (int i = 0; i < array.length; i++) {
+        //            newArray[i] = Arrays.copyOf(array[i], array[i].length);
+        //        }
 
         CharArray result = new CharArray(this.array);
         result.xOffset = this.xOffset;

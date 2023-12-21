@@ -2,6 +2,7 @@ package aoc.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Direction {
     private Coordinate getNext() {
@@ -23,6 +24,10 @@ public class Direction {
                 throw new RuntimeException();
         }
         return result;
+    }
+
+    public Coordinate getNext(Coordinate coordinate) {
+        return coordinate.add(getNext());
     }
 
     public List<Coordinate> getCoordinateToTheRight(Coordinate coordinate, char value) {
@@ -135,6 +140,44 @@ public class Direction {
         this.dir = dir;
     }
 
+    public static Direction of(Directions dir) {
+        return new Direction(dir);
+    }
+
+    public Directions getDirection() {
+        return dir;
+    }
+
+    public Direction getLeft() {
+        switch (dir) {
+            case UP:
+                return Direction.of(Directions.LEFT);
+            case DOWN:
+                return Direction.of(Directions.RIGHT);
+            case LEFT:
+                return Direction.of(Directions.DOWN);
+            case RIGHT:
+                return Direction.of(Directions.UP);
+            default:
+                throw new RuntimeException();
+        }
+    }
+
+    public Direction getRight() {
+        switch (dir) {
+            case UP:
+                return Direction.of(Directions.RIGHT);
+            case DOWN:
+                return Direction.of(Directions.LEFT);
+            case LEFT:
+                return Direction.of(Directions.UP);
+            case RIGHT:
+                return Direction.of(Directions.DOWN);
+            default:
+                throw new RuntimeException();
+        }
+    }
+
     public Directions turnLeft() {
         switch (dir) {
             case UP:
@@ -175,4 +218,20 @@ public class Direction {
         return dir;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Direction direction = (Direction) o;
+        return dir == direction.dir;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dir);
+    }
 }

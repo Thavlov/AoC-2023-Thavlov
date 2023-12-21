@@ -101,7 +101,7 @@ public class Coordinate {
 
     public Coordinate[] getCoordinateAdjacentInsideBounds(int dx, int dy) {
         return Arrays.stream(getCoordinateAdjacent())
-                .filter(isWithinBounds(dx, dy))
+                .filter(isWithinBoundsPredicate(dx, dy))
                 .toArray(Coordinate[]::new);
     }
 
@@ -130,12 +130,16 @@ public class Coordinate {
 
     public Coordinate[] getCoordinateAdjacentIncludingDiagonalInsideBounds(int dx, int dy) {
         return Arrays.stream(getCoordinateAdjacentIncludingDiagonal())
-                .filter(isWithinBounds(dx, dy))
+                .filter(isWithinBoundsPredicate(dx, dy))
                 .toArray(Coordinate[]::new);
     }
 
-    private Predicate<Coordinate> isWithinBounds(int dx, int dy) {
+    private Predicate<Coordinate> isWithinBoundsPredicate(int dx, int dy) {
         return c -> c.getX() >= 0 && c.getX() < dx && c.getY() >= 0 && c.getY() < dy;
+    }
+
+    public boolean isWithinBounds(int dx, int dy) {
+        return getX() >= 0 && getX() < dx && getY() >= 0 && getY() < dy;
     }
 
     public Coordinate getCoordinateAdjacentTo(final Coordinate other) {
